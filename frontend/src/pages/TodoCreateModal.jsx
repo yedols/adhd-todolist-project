@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export default function TodoCreateModal() {
@@ -10,22 +9,48 @@ export default function TodoCreateModal() {
   const [minute, setMinute] = useState('00');
   const [interval, setInterval] = useState('30');
 
+  useEffect(() => {
+      const editTodo = localStorage.getItem('editTodo');
+      if (editTodo) {
+        const { text, time, interval } = JSON.parse(editTodo);
+        const [h, m_ampm] = time.split(':');
+        const [m, ap] = m_ampm.split(' ');
+        setText(text);
+        setHour(h);
+        setMinute(m);
+        setAmpm(ap);
+        setInterval(interval);
+      }
+    }, []);
+
   const handleSubmit = () => {
     const todo = {
       interval,
       time: `${hour}:${minute} ${ampm}`,
       text
     };
-    localStorage.setItem('newTodo', JSON.stringify(todo));
+    
+    const isEditing = localStorage.getItem('editTodo');
+    if (isEditing) {
+      const { index } = JSON.parse(isEditing);
+      todo.index = index;
+      localStorage.setItem('editTodo', JSON.stringify(todo));
+    } else {
+      localStorage.setItem('newTodo', JSON.stringify(todo));
+    }
     navigate('/filled');
   };
 
   const hourOptions = Array.from({ length: 12 }, (_, i) => String(i + 1).padStart(2, '0'));
-  const minuteOptions = Array.from({ length: 12 }, (_, i) => String((i + 1) * 5).padStart(2, '0'));
+  const minuteOptions = ['00', ...Array.from({ length: 11 }, (_, i) => String((i + 1) * 5).padStart(2, '0'))]; // 5분 간격 수정
 
   return (
     <div className="modal">
-      <h3>할일 등록 하세요.</h3>
+      <div className="modal-header" style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <button onClick={() => navigate(-1)}>❌</button>
+        <h3>할일 등록 하세요.</h3>
+        <button onClick={handleSubmit}>✔</button>
+      </div>
       <input type="text" placeholder="할 일" value={text} onChange={e => setText(e.target.value)} />
       <div style={{ display: 'flex', gap: '0.5rem' }}>
         <select value={ampm} onChange={e => setAmpm(e.target.value)}>
@@ -54,7 +79,6 @@ export default function TodoCreateModal() {
       <p style={{ marginTop: '1rem', fontSize: '0.9rem' }}>
         ⏰ 시간 설정 없으면 30분 간격으로 알림드립니다.
       </p>
-      <button onClick={handleSubmit}>등록</button>
     </div>
   );
 }
