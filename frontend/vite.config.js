@@ -9,20 +9,21 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'robots.txt', 'apple-touch-icon.png'],
       manifest: {
-        name: 'My App',
-        short_name: 'App',
+        name: 'DO투두',
+        short_name: 'DO투두',
+        description: 'ADHD를 위한 리마인드 Todo List',
         start_url: '/',
         display: 'standalone',
         background_color: '#ffffff',
         theme_color: '#000000',
         icons: [
           {
-            src: 'icon-192x192.png',
+            src: 'app-logo.png',
             sizes: '192x192',
             type: 'image/png',
           },
           {
-            src: 'icon-512x512.png',
+            src: 'app-logo.png',
             sizes: '512x512',
             type: 'image/png',
           },
