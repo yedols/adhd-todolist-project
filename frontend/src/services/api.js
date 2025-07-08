@@ -4,7 +4,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;   //.env파일에서 API
 
 export const sendTokenToBackend = async (token) => {
   return axios.post(
-    "http://localhost:8000/api/auth/register",
+	"/api/auth/register",	  
     {},
     {
       headers: {
