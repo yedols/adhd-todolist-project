@@ -1,0 +1,82 @@
+
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background-color: #f9f9f9;
+}
+
+.container, .page, .modal {
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: white;
+  border-radius: 1rem;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+input[type="text"], input[type="password"], select {
+  display: block;
+  width: 100%;
+  margin: 0.5rem 0;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+}
+
+button {
+  margin-top: 0.5rem;
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  background-color: #6c63ff;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #554cd1;
+}
+
+.footer-nav {
+  display: flex;
+  justify-content: space-around;
+  padding-top: 2rem;
+}
+
+.todo-item {
+  background: #f0f0f0;
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
+  border-radius: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Todo완료 스타일 추가 */
+.todo-item.completed {
+  opacity: 0.5;
+  text-decoration: line-through;
+  color: #888; /* 흐릿한 회색 톤 */
+}
+
+
+/* 상단 로그아웃 버튼 */
+.button-small {
+  all: unset;
+  font-size: 0.75rem;
+  padding: 0.3rem 0.4rem;
+  border-radius: 0.5rem;
+  background-color: #6c63ff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.button-small:hover {
+  background-color: #554cd1;
+}
