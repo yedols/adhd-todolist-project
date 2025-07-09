@@ -1,11 +1,14 @@
 from pydantic import BaseModel
-from typing import Optional, List
+from typing import Optional
+from datetime import datetime
 
 class TodoCreate(BaseModel):
     text: str
-    start_time: str
+    start_time: datetime
     interval_minutes: int
-    user_id: int | None = None  # 생성 시 optional이어야 함
+    is_checked: Optional[bool] = False
+    last_notified_time: Optional[datetime] = None
+    user_id: Optional[int] = None
 
 class TodoRead(TodoCreate):
     id: int
@@ -21,4 +24,3 @@ class UserRead(UserCreate):
 
     class Config:
         from_attributes = True
-

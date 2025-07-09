@@ -30,3 +30,24 @@ async def get_todos_by_user(db: AsyncSession, user_id: int):
         select(model.Todo).where(model.Todo.user_id == user_id)
     )
     return result.scalars().all()
+
+# ✅ 추가: 체크 상태를 업데이트하는 함수
+async def update_todo_status(db: AsyncSession, todo_id: int, is_checked: bool):
+    result = await db.execute(select(model.Todo).where(model.Todo.id == todo_id))
+    todo_obj = result.scalars().first()
+    if not todo_obj:
+        return None
+    todo_obj.is_checked = is_checked
+    await db.commit()
+    await db.refresh(todo_obj)
+    return todo_obj
+
+async def delete_todo_by_id(db: AsyncSession, todo_id: int):
+    result = await db.execute(select(model.Todo).where(model.Todo.id == todo_id))
+    todo_obj = result.scalars().first()
+    if not todo_obj:
+        return False
+
+    await db.delete(todo_obj)
+    await db.commit()
+    return True

@@ -41,16 +41,55 @@ export default function TodoListFilledPage() {
     fetchTodos();
   }, []);
 
-  // 🗑 서버 기반 삭제는 아직 구현되지 않았으므로 UI만 제거
-  const handleDelete = (id) => {
-    setTodos(todos.filter(todo => todo.id !== id));
-    // 실제 삭제 기능은 추후 API 연동 시 구현 필요
-  };
+const handleDelete = async (id) => {
+  try {
+    const token = localStorage.getItem('accessToken');
+    const res = await fetch(`http://localhost:8000/api/todo/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
 
-  // ✏ 수정은 현재 미구현 → /create로 이동 + 기존 내용 넘기려면 구현 필요
+    if (!res.ok) {
+      throw new Error('삭제 실패');
+    }
+
+    // UI에서 제거
+    setTodos(todos.filter(todo => todo.id !== id));
+  } catch (err) {
+    console.error(err);
+    alert('할 일 삭제에 실패했습니다.');
+  }
+};
+
+
   const handleEdit = (todo) => {
     localStorage.setItem('editTodo', JSON.stringify(todo));
     window.location.href = '/create';
+  };
+
+  const handleToggle = async (id, is_checked) => {
+    setTodos(prev =>
+      prev.map(todo =>
+        todo.id === id ? { ...todo, is_checked } : todo
+      )
+    );
+
+    try {
+      const token = localStorage.getItem('accessToken');
+      await fetch(`http://localhost:8000/api/todo/${id}/status`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ is_checked })
+      });
+    } catch (err) {
+      console.error('체크 상태 업데이트 실패:', err);
+      alert('서버에 상태를 저장하지 못했습니다.');
+    }
   };
 
   return (
@@ -67,12 +106,12 @@ export default function TodoListFilledPage() {
         .map((todo) => (
           <TodoItem
             key={todo.id}
-            time={todo.start_time}
-            text={todo.text}
+            todo={todo}
             onDelete={() => handleDelete(todo.id)}
             onEdit={() => handleEdit(todo)}
+            onToggle={handleToggle}
           />
-      ))}
+        ))}
       <FooterNav />
     </div>
   );

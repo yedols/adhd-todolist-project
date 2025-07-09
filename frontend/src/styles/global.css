@@ -55,3 +55,10 @@ button:hover {
   justify-content: space-between;
   align-items: center;
 }
+
+/* Todo완료 스타일 추가 */
+.todo-item.completed {
+  opacity: 0.5;
+  text-decoration: line-through;
+  color: #888; /* 흐릿한 회색 톤 */
+}

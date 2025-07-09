@@ -9,29 +9,49 @@ export default function TodoCreateModal() {
   const [minute, setMinute] = useState('00');
   const [interval, setInterval] = useState('30');
 
-  useEffect(() => {
-      const editTodo = localStorage.getItem('editTodo');
-      if (editTodo) {
-        const { text, time, interval } = JSON.parse(editTodo);
+useEffect(() => {
+  const editTodo = localStorage.getItem('editTodo');
+  if (editTodo) {
+    try {
+      const { text, time, interval } = JSON.parse(editTodo);
+      setText(text);
+      setInterval(interval);
+
+      if (typeof time === 'string' && time.includes(':')) {
         const [h, m_ampm] = time.split(':');
         const [m, ap] = m_ampm.split(' ');
-        setText(text);
-        setHour(h);
-        setMinute(m);
-        setAmpm(ap);
-        setInterval(interval);
+
+        if (h && m && ap) {
+          setHour(h);
+          setMinute(m);
+          setAmpm(ap);
+        }
       }
-    }, []);
+    } catch (e) {
+      console.warn('editTodo parsing 실패:', e);
+    }
+  }
+}, []);
+
 
 const handleSubmit = async () => {
   const hour24 = ampm === 'PM' ? String((parseInt(hour) % 12) + 12).padStart(2, '0') : hour;
   const start_time = new Date(`2025-07-08T${hour24}:${minute}:00`).toISOString();
+  
+const parsedInterval = parseInt(interval, 10);
+if (isNaN(parsedInterval)) {
+  alert('알림 주기를 숫자로 설정해주세요.');
+  return;
+}
 
-  const todo = {
-    text,
-    start_time,
-    interval_minutes: parseInt(interval)
-  };
+const todo = {
+  text,
+  start_time,
+  interval_minutes: parsedInterval,
+  is_checked: false,
+  last_notified_time: null
+};
+
 
   try {
     const token = localStorage.getItem('accessToken');
@@ -54,6 +74,7 @@ const handleSubmit = async () => {
   } catch (err) {
     alert('할 일 등록에 실패했습니다. 다시 시도해주세요.');
     console.error(err);
+    console.log('📤 보낼 todo 데이터:', todo);
   }
 };
 

@@ -15,3 +15,13 @@ export const sendTokenToBackend = async (token) => {
     }
   );
 };
+
+// ✅ 추가: 체크 상태 변경 PATCH 요청
+export const updateTodoStatus = async (todoId, isChecked) => {
+  const token = localStorage.getItem('accessToken');
+  return axios.patch(`${API_BASE_URL}/api/todo/${todoId}/status?is_checked=${isChecked}`, {}, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+};
