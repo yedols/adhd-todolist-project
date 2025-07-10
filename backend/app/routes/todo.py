@@ -15,6 +15,7 @@ async def read_my_todos(
     db: AsyncSession = Depends(get_db)
 ):  
     print("📦 Authorization 헤더:", authorization)  # ✅ 추가
+    print("📌 /me 요청 도달 확인")  # 이 줄 추가
     # Firebase 토큰 검증
     try:
         user = verify_token(authorization)
