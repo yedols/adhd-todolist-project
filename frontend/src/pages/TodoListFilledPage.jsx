@@ -18,6 +18,8 @@ export default function TodoListFilledPage() {
             'Authorization': `Bearer ${token}`
           }
         });
+        console.log("✅ 요청 주소:", `${import.meta.env.VITE_API_BASE_URL}/api/todo/me`);
+        console.log("✅ 응답 상태코드:", res.status);
 
         if (!res.ok) throw new Error('ToDo 불러오기 실패');
 
