@@ -1,4 +1,3 @@
-// ✅ 실제 프로젝트 값으로 교체하세요
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 

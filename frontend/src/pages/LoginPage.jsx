@@ -2,23 +2,26 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { loginWithEmail } from '../services/auth';
 import { sendTokenToBackend } from '../services/api';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+
 
 export default function LoginPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = async () => {
-    try {
-      const token = await loginWithEmail(email, password); // 🔐 Firebase 로그인
-      await sendTokenToBackend(token); // 🚀 FastAPI에 토큰 전달
-      alert('로그인 성공!');
-      navigate('/filled');
-    } catch (err) {
-      console.error(err);
-      alert('로그인 실패!');
-    }
-  };
+const handleLogin = async () => {
+  const auth = getAuth();
+  
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const token = await userCredential.user.getIdToken();      // ✅ 여기서 토큰 가져오기
+    localStorage.setItem('accessToken', token);                // ✅ 여기서 저장
+    navigate("/filled"); // 로그인 성공 시 이동
+  } catch (error) {
+    alert("로그인 실패: " + error.message);
+  }
+};
 
   return (
     <div className="container">
