@@ -62,3 +62,20 @@ button:hover {
   text-decoration: line-through;
   color: #888; /* 흐릿한 회색 톤 */
 }
+
+/* 상단 로그아웃 버튼 */
+.button-small {
+  all: unset;
+  font-size: 0.75rem;
+  padding: 0.3rem 0.4rem;
+  border-radius: 0.5rem;
+  background-color: #6c63ff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.button-small:hover {
+  background-color: #554cd1;
+}

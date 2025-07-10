@@ -1,16 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import FooterNav from '../components/FooterNav';
-
-function getFormattedDate() {                                       // 현재 시간 설정
-  const today = new Date();
-  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  const year = today.getFullYear();
-  const month = String(today.getMonth() + 1).padStart(2, '0');
-  const date = String(today.getDate()).padStart(2, '0');
-  const day = days[today.getDay()];
-  return `${year}-${month}-${date} (${day})`;
-}
+import HeaderNav from '../components/HeaderNav';
 
 export default function TodoListEmptyPage() {
   const navigate = useNavigate();
@@ -24,7 +15,7 @@ export default function TodoListEmptyPage() {
 
   return (
     <div className="page">
-      <div className="header">YYYY-MM-DD (Mon)</div>
+      <HeaderNav />   {/* 헤더에 날짜/로그아웃 기능*/}
       <input type="text" placeholder="Search" />
       <p>등록된 일정이 없습니다.</p>
       <FooterNav />

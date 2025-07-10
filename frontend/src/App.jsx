@@ -27,6 +27,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
+        <Route path="/login" element={<LoginPage />} />  {/* 로그아웃 관련 파트 */}
         <Route path="/empty" element={<TodoListEmptyPage />} />
         <Route path="/filled" element={<TodoListFilledPage />} />
         <Route path="/create" element={<TodoCreateModal />} />

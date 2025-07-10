@@ -8,41 +8,46 @@ export default function TodoCreateModal() {
   const [hour, setHour] = useState('09');
   const [minute, setMinute] = useState('00');
   const [interval, setInterval] = useState('30');
+  const [editId, setEditId] = useState(null);
 
+
+// 수정 모드일 경우 localStorage에서 todo 정보를 가져옴
 useEffect(() => {
   const editTodo = localStorage.getItem('editTodo');
   if (editTodo) {
     try {
-      const { text, time, interval } = JSON.parse(editTodo);
+      const { id, text, time, interval } = JSON.parse(editTodo);
+      setEditId(id);
       setText(text);
       setInterval(interval);
 
-      if (typeof time === 'string' && time.includes(':')) {
-        const [h, m_ampm] = time.split(':');
-        const [m, ap] = m_ampm.split(' ');
 
-        if (h && m && ap) {
-          setHour(h);
-          setMinute(m);
-          setAmpm(ap);
+
+
+
+      if (typeof start_time === 'string' && start_time.includes('T')) {
+        const timePart = new Date(start_time).toLocaleTimeString('en-US', { hour12: true });
+          const [h, m, rest] = timePart.split(':');
+          const ampm = rest.includes('AM') ? 'AM' : 'PM';
+          setHour(h.padStart(2, '0'));
+          setMinute(m.padStart(2, '0'));
+          setAmpm(ampm);
         }
-      }
     } catch (e) {
       console.warn('editTodo parsing 실패:', e);
     }
   }
 }, []);
 
-
+// 등록/수정 공통 처리 함수
 const handleSubmit = async () => {
   const hour24 = ampm === 'PM' ? String((parseInt(hour) % 12) + 12).padStart(2, '0') : hour;
   const start_time = new Date(`2025-07-08T${hour24}:${minute}:00`).toISOString();
-  
-const parsedInterval = parseInt(interval, 10);
+  let parsedInterval = parseInt(interval, 10);
 if (isNaN(parsedInterval)) {
-  alert('알림 주기를 숫자로 설정해주세요.');
-  return;
+  parsedInterval = 30; // 반복 주기 기본값 30분으로 설정
 }
+
 
 const todo = {
   text,
@@ -64,6 +69,8 @@ const todo = {
       body: JSON.stringify(todo)
     });
 
+
+
     if (!res.ok) {
       throw new Error('할 일 생성 실패');
     }
@@ -84,10 +91,15 @@ const todo = {
   return (
     <div className="modal">
       <div className="modal-header" style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <button onClick={() => navigate(-1)}>❌</button>
-        <h3>할일 등록 하세요.</h3>
-        <button onClick={handleSubmit}>✔</button>
+        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'left' }}>
+          <button onClick={() => navigate(-1)}>❌</button>
+        </div>
+        <h2>{editId ? '일정 수정' : '일정 등록'}</h2>
+        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'right' }}>
+          <button onClick={handleSubmit}>✔</button>
+        </div>
       </div>
+
       <input type="text" placeholder="할 일" value={text} onChange={e => setText(e.target.value)} />
       <div style={{ display: 'flex', gap: '0.5rem' }}>
         <select value={ampm} onChange={e => setAmpm(e.target.value)}>
