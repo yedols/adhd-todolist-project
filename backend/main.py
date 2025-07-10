@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.routes import auth, todo
+from app.db.database import engine
+from app.db.model import Base
 
 app = FastAPI()
 
@@ -11,6 +13,12 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+@app.on_event("startup")
+async def on_startup():
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+
+
 @app.get("/")
 async def root():
     return {"message": "Hello, FastAPI is running!"}
