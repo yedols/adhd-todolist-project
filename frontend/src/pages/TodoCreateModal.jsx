@@ -8,51 +8,105 @@ export default function TodoCreateModal() {
   const [hour, setHour] = useState('09');
   const [minute, setMinute] = useState('00');
   const [interval, setInterval] = useState('30');
+  const [editId, setEditId] = useState(null);
 
-  useEffect(() => {
-      const editTodo = localStorage.getItem('editTodo');
-      if (editTodo) {
-        const { text, time, interval } = JSON.parse(editTodo);
-        const [h, m_ampm] = time.split(':');
-        const [m, ap] = m_ampm.split(' ');
-        setText(text);
-        setHour(h);
-        setMinute(m);
-        setAmpm(ap);
-        setInterval(interval);
-      }
-    }, []);
+  // 수정 모드일 경우 localStorage에서 todo 정보를 가져옴
+useEffect(() => {
+  const editTodo = localStorage.getItem('editTodo');
+  if (editTodo) {
+    try {
+      const { id, text, time, interval } = JSON.parse(editTodo);
+      setEditId(id);
+      setText(text);
+      setInterval(interval);
 
-  const handleSubmit = () => {
-    const todo = {
-      interval,
-      time: `${hour}:${minute} ${ampm}`,
-      text
-    };
-    
-    const isEditing = localStorage.getItem('editTodo');
-    if (isEditing) {
-      const { index } = JSON.parse(isEditing);
-      todo.index = index;
-      localStorage.setItem('editTodo', JSON.stringify(todo));
-    } else {
-      localStorage.setItem('newTodo', JSON.stringify(todo));
+      if (typeof start_time === 'string' && start_time.includes('T')) {
+        const timePart = new Date(start_time).toLocaleTimeString('en-US', { hour12: true });
+          const [h, m, rest] = timePart.split(':');
+          const ampm = rest.includes('AM') ? 'AM' : 'PM';
+          setHour(h.padStart(2, '0'));
+          setMinute(m.padStart(2, '0'));
+          setAmpm(ampm);
+        }
+    } catch (e) {
+      console.warn('editTodo parsing 실패:', e);
     }
-    navigate('/filled');
+  }
+}, []);
+
+// 등록/수정 공통 처리 함수
+const handleSubmit = async () => {
+  const hour24 = ampm === 'PM' ? String((parseInt(hour) % 12) + 12).padStart(2, '0') : hour;
+  const start_time = new Date(`2025-07-08T${hour24}:${minute}:00`).toISOString();
+  let parsedInterval = parseInt(interval, 10);
+if (isNaN(parsedInterval)) {
+  parsedInterval = 30; // 반복 주기 기본값 30분으로 설정
+}
+
+  const todo = {
+    text,
+    start_time,
+    interval_minutes: parsedInterval,
+    is_checked: false,
+    last_notified_time: null
   };
+
+
+  try {
+    const token = localStorage.getItem('accessToken');
+    const endpoint = editId
+      ? `http://localhost:8000/api/todo/${editId}`
+      : 'http://localhost:8000/api/todo/';
+    const method = editId ? 'PATCH' : 'POST';       //일정 수정인지 등록인지에 따라 보내지는 곳 다르게
+
+    const res = await fetch(endpoint, {
+      method,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}` // ✅ 꼭 Bearer 포함!
+      },
+      body: JSON.stringify(todo)
+    });
+    
+    if (!res.ok) throw new Error('저장 실패');
+      localStorage.removeItem('editTodo');
+      navigate('/filled');
+    } catch (err) {
+      console.error(err);
+      alert('저장 중 오류 발생');
+    }
+  };
+//     if (!res.ok) {
+//       throw new Error('할 일 생성 실패');
+//     }
+
+//     const data = await res.json();
+//     console.log('📌 ToDo 생성 성공:', data);
+//     navigate('/filled');
+//   } catch (err) {
+//     alert('할 일 등록에 실패했습니다. 다시 시도해주세요.');
+//     console.error(err);
+//     console.log('📤 보낼 todo 데이터:', todo);
+//   }
+// };
 
   const hourOptions = Array.from({ length: 12 }, (_, i) => String(i + 1).padStart(2, '0'));
   const minuteOptions = ['00', ...Array.from({ length: 11 }, (_, i) => String((i + 1) * 5).padStart(2, '0'))]; // 5분 간격 수정
 
   return (
     <div className="modal">
+      {/* 상단 헤더 - 닫기, 제목, 로그아웃, 저장 버튼 */}
       <div className="modal-header" style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <button onClick={() => navigate(-1)}>❌</button>
-        <h3>할일 등록 하세요.</h3>
-        <button onClick={handleSubmit}>✔</button>
+        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'left' }}>
+          <button onClick={() => navigate(-1)}>❌</button>
+        </div>
+        <h2>{editId ? '일정 수정' : '일정 등록'}</h2>
+        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'right' }}>
+          <button onClick={handleSubmit}>✔</button>
+        </div>
       </div>
-      <input type="text" placeholder="할 일" value={text} onChange={e => setText(e.target.value)} />
-      <div style={{ display: 'flex', gap: '0.5rem' }}>
+      <input type="text" placeholder="할 일" value={text} onChange={e => setText(e.target.value)} />  {/* 할 일 입력 */}
+      <div style={{ display: 'flex', gap: '0.5rem' }}>                  {/* 시간 선택 */}
         <select value={ampm} onChange={e => setAmpm(e.target.value)}>
           <option value="AM">오전</option>
           <option value="PM">오후</option>
@@ -65,7 +119,8 @@ export default function TodoCreateModal() {
           {minuteOptions.map(m => <option key={m}>{m}</option>)}
         </select>
       </div>
-      
+
+      {/* 알림 주기 */}
       <div style={{ marginTop: '1rem' }}>
         <label>⏱ 알림 주기 (분 단위)</label>
         <select value={interval} onChange={e => setInterval(e.target.value)}>

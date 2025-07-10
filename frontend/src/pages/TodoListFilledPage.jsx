@@ -1,72 +1,108 @@
 import React, { useEffect, useState } from 'react';
 import TodoItem from '../components/TodoItem';
 import FooterNav from '../components/FooterNav';
-
-function getFormattedDate() {                                       // 현재 시간 설정
-  const today = new Date();
-  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  const year = today.getFullYear();
-  const month = String(today.getMonth() + 1).padStart(2, '0');
-  const date = String(today.getDate()).padStart(2, '0');
-  const day = days[today.getDay()];
-  return `${year}-${month}-${date} (${day})`;
-}
+import HeaderNav from '../components/HeaderNav';
 
 export default function TodoListFilledPage() {
   const [todos, setTodos] = useState([]);
-  const [searchText, setSearchText] = useState('');                 // 검색 필터 창
+  const [searchText, setSearchText] = useState('');
 
   useEffect(() => {
-    let todos = JSON.parse(localStorage.getItem('todos') || '[]');
-    const newTodo = localStorage.getItem('newTodo');
-    const editTodo = localStorage.getItem('editTodo');
+    const fetchTodos = async () => {
+      try {
+        const token = localStorage.getItem('accessToken');
+        if (!token) throw new Error('로그인이 필요합니다');
 
-    if (newTodo) {
-      const parsed = JSON.parse(newTodo);
-      todos.push(parsed);
-      localStorage.setItem('todos', JSON.stringify(todos));
-      localStorage.removeItem('newTodo');
-    }
+        const res = await fetch('http://localhost:8000/api/todo/me', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
 
-    if (editTodo) {
-      const parsed = JSON.parse(editTodo);
-      todos[parsed.index] = parsed;
-      localStorage.setItem('todos', JSON.stringify(todos));
-      localStorage.removeItem('editTodo');
-    }
+        if (!res.ok) throw new Error('ToDo 불러오기 실패');
 
-    setTodos(todos);
+        const data = await res.json();
+        setTodos(data);
+      } catch (err) {
+        console.error(err);
+        alert('할 일을 불러오는 데 실패했습니다.');
+      }
+    };
+
+    fetchTodos();
   }, []);
 
-  const handleDelete = (index) => {
-    const updatedTodos = todos.filter((_, i) => i !== index);
-    setTodos(updatedTodos);
-    localStorage.setItem('todos', JSON.stringify(updatedTodos));
+  // 삭제 API 수정
+  const handleDelete = async (id) => {
+  try {
+    const token = localStorage.getItem('accessToken');
+    const res = await fetch(`http://localhost:8000/api/todo/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (!res.ok) {
+      throw new Error('삭제 실패');
+    }
+
+    // UI에서 제거
+    setTodos(todos.filter(todo => todo.id !== id));
+  } catch (err) {
+    console.error(err);
+    alert('할 일 삭제에 실패했습니다.');
+  }
+};
+
+  const handleEdit = (todo) => {
+    localStorage.setItem('editTodo', JSON.stringify(todo));   //editTodo저장 후에 /create로 이동
+    window.location.href = '/create';
   };
 
-  const handleEdit = (index) => {
-    const todo = todos[index];
-    localStorage.setItem('editTodo', JSON.stringify({ ...todo, index }));
-    window.location.href = '/create';
+  const handleToggle = async (id, is_checked) => {
+    setTodos(prev =>
+      prev.map(todo =>
+        todo.id === id ? { ...todo, is_checked } : todo
+      )
+    );
+
+    try {
+      const token = localStorage.getItem('accessToken');
+      await fetch(`http://localhost:8000/api/todo/${id}/status`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ is_checked })
+      });
+    } catch (err) {
+      console.error('체크 상태 업데이트 실패:', err);
+      alert('서버에 상태를 저장하지 못했습니다.');
+    }
   };
 
   return (
     <div className="page">
-      <div className="header">{getFormattedDate()}</div>          {/* 시간 적용 */}
-      <input type="text" placeholder="Search"
+      <HeaderNav />   {/* 헤더에 날짜/로그아웃 기능*/}
+      <input
+        type="text"
+        placeholder="Search"
         value={searchText}
-        onChange={(e) => setSearchText(e.target.value)}/>         {/* 검색 필터 적용 */}
+        onChange={(e) => setSearchText(e.target.value)}
+      />
       {todos
         .filter(todo => todo.text.toLowerCase().includes(searchText.toLowerCase()))
-        .map((todo, idx) => (
+        .map((todo) => (
           <TodoItem
-            key={idx}
-            time={todo.time}
-            text={todo.text}
-            onDelete={() => handleDelete(idx)}
-            onEdit={() => handleEdit(idx)}
+            key={todo.id}
+            todo={todo}
+            onDelete={() => handleDelete(todo.id)}
+            onEdit={() => handleEdit(todo)}
+            onToggle={handleToggle}
           />
-      ))}
+        ))}
       <FooterNav />
     </div>
   );
