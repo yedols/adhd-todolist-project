@@ -97,3 +97,20 @@ async def update_todo(
         raise HTTPException(status_code=404, detail="ToDo not found")
 
     return updated
+
+@router.delete("/{todo_id}")
+async def delete_todo(
+    todo_id: int,
+    authorization: str = Header(...),
+    db: AsyncSession = Depends(get_db)
+):
+    try:
+        user = verify_token(authorization)
+    except Exception:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
+    success = await crud.delete_todo_by_id(db, todo_id)
+    if not success:
+        raise HTTPException(status_code=404, detail="ToDo not found")
+
+    return {"message": "삭제 완료", "id": todo_id}

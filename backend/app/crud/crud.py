@@ -56,3 +56,13 @@ async def update_todo_status(db: AsyncSession, todo_id: int, is_checked: bool):
     await db.refresh(todo_obj)
     return todo_obj
 
+#삭제 함수
+async def delete_todo_by_id(db: AsyncSession, todo_id: int):
+    result = await db.execute(select(model.Todo).where(model.Todo.id == todo_id))
+    todo_obj = result.scalars().first()
+    if not todo_obj:
+        return False
+
+    await db.delete(todo_obj)
+    await db.commit()
+    return True

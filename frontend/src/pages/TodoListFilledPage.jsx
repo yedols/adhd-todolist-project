@@ -32,10 +32,28 @@ export default function TodoListFilledPage() {
     fetchTodos();
   }, []);
 
-  const handleDelete = (id) => {
+  // 삭제 API 수정
+  const handleDelete = async (id) => {
+  try {
+    const token = localStorage.getItem('accessToken');
+    const res = await fetch(`http://localhost:8000/api/todo/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (!res.ok) {
+      throw new Error('삭제 실패');
+    }
+
+    // UI에서 제거
     setTodos(todos.filter(todo => todo.id !== id));
-    // 추후 API 연동 예정
-  };
+  } catch (err) {
+    console.error(err);
+    alert('할 일 삭제에 실패했습니다.');
+  }
+};
 
   const handleEdit = (todo) => {
     localStorage.setItem('editTodo', JSON.stringify(todo));   //editTodo저장 후에 /create로 이동

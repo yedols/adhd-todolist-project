@@ -26,6 +26,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<LoginPage />} />
+        <Route path="/login" element={<LoginPage />} /> {/* 로그인 경로 설정*/}
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/empty" element={<TodoListEmptyPage />} />
         <Route path="/filled" element={<TodoListFilledPage />} />
