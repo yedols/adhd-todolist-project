@@ -55,7 +55,7 @@ const todo = {
 
   try {
     const token = localStorage.getItem('accessToken');
-    const res = await fetch('http://localhost:8000/api/todo/', {
+    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/todo/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
