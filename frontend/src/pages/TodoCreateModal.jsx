@@ -55,8 +55,8 @@ if (isNaN(parsedInterval)) {
   try {
     const token = localStorage.getItem('accessToken');
     const endpoint = editId
-      ? `http://localhost:8000/api/todo/${editId}`
-      : 'http://localhost:8000/api/todo/';
+      ? `${import.meta.env.VITE_API_BASE_URL}/api/todo/${editId}`
+      : '${import.meta.env.VITE_API_BASE_URL}/api/todo/';
     const method = editId ? 'PATCH' : 'POST';       //일정 수정인지 등록인지에 따라 보내지는 곳 다르게
 
     const res = await fetch(endpoint, {

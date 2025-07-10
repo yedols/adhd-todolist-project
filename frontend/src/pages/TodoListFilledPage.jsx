@@ -13,7 +13,7 @@ export default function TodoListFilledPage() {
         const token = localStorage.getItem('accessToken');
         if (!token) throw new Error('로그인이 필요합니다');
 
-        const res = await fetch('http://localhost:8000/api/todo/me', {
+        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/todo/me`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -36,7 +36,7 @@ export default function TodoListFilledPage() {
   const handleDelete = async (id) => {
   try {
     const token = localStorage.getItem('accessToken');
-    const res = await fetch(`http://localhost:8000/api/todo/${id}`, {
+    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/todo/${id}`, {
       method: 'DELETE',
       headers: {
         'Authorization': `Bearer ${token}`
@@ -69,7 +69,7 @@ export default function TodoListFilledPage() {
 
     try {
       const token = localStorage.getItem('accessToken');
-      await fetch(`http://localhost:8000/api/todo/${id}/status`, {
+      await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/todo/${id}/status`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
