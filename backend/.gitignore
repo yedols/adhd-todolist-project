@@ -23,3 +23,5 @@ yarn-error.log*
 
 # 기타
 *.swp
+
+todos.db
