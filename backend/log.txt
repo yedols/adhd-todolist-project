@@ -1,0 +1,145 @@
+INFO:     Will watch for changes in these directories: ['/root/adhd-todolist-project/backend']
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [6949] using StatReload
+INFO:     Started server process [6951]
+INFO:     Waiting for application startup.
+ERROR:    Traceback (most recent call last):
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 145, in __init__
+    self._dbapi_connection = engine.raw_connection()
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 3297, in raw_connection
+    return self.pool.connect()
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 449, in connect
+    return _ConnectionFairy._checkout(self)
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 1264, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 713, in checkout
+    rec = pool._do_get()
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/sqlalchemy/pool/impl.py", line 180, in _do_get
+    self._dec_overflow()
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/sqlalchemy/util/langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/sqlalchemy/pool/impl.py", line 177, in _do_get
+    return self._create_connection()
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 390, in _create_connection
+    return _ConnectionRecord(self)
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 675, in __init__
+    self.__connect()
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 902, in __connect
+    pool.logger.debug("Error on connect(): %s", e)
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/sqlalchemy/util/langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 897, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/sqlalchemy/engine/create.py", line 646, in connect
+    return dialect.connect(*cargs, **cparams)
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/sqlalchemy/engine/default.py", line 625, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/sqlalchemy/dialects/mysql/aiomysql.py", line 270, in connect
+    await_only(creator_fn(*arg, **kw)),
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/sqlalchemy/util/_concurrency_py3k.py", line 132, in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/sqlalchemy/util/_concurrency_py3k.py", line 196, in greenlet_spawn
+    value = await result
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/aiomysql/connection.py", line 75, in _connect
+    await conn._connect()
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/aiomysql/connection.py", line 540, in _connect
+    await self._request_authentication()
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/aiomysql/connection.py", line 844, in _request_authentication
+    auth_packet = await self._read_packet()
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/aiomysql/connection.py", line 652, in _read_packet
+    packet.raise_for_error()
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/pymysql/protocol.py", line 219, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/pymysql/err.py", line 150, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.OperationalError: (1049, "Unknown database 'todos'")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/starlette/routing.py", line 692, in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+  File "/usr/lib64/python3.9/contextlib.py", line 181, in __aenter__
+    return await self.gen.__anext__()
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/fastapi/routing.py", line 133, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "/usr/lib64/python3.9/contextlib.py", line 181, in __aenter__
+    return await self.gen.__anext__()
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/fastapi/routing.py", line 133, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/starlette/routing.py", line 569, in __aenter__
+    await self._router.startup()
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/starlette/routing.py", line 669, in startup
+    await handler()
+  File "/root/adhd-todolist-project/backend/main.py", line 21, in on_startup
+    async with engine.begin() as conn:
+  File "/usr/lib64/python3.9/contextlib.py", line 181, in __aenter__
+    return await self.gen.__anext__()
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/sqlalchemy/ext/asyncio/engine.py", line 1066, in begin
+    async with conn:
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/sqlalchemy/ext/asyncio/base.py", line 121, in __aenter__
+    return await self.start(is_ctxmanager=True)
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/sqlalchemy/ext/asyncio/engine.py", line 274, in start
+    await greenlet_spawn(self.sync_engine.connect)
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/sqlalchemy/util/_concurrency_py3k.py", line 201, in greenlet_spawn
+    result = context.throw(*sys.exc_info())
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 3273, in connect
+    return self._connection_cls(self)
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 147, in __init__
+    Connection._handle_dbapi_exception_noconnection(
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 2436, in _handle_dbapi_exception_noconnection
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 145, in __init__
+    self._dbapi_connection = engine.raw_connection()
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/sqlalchemy/engine/base.py", line 3297, in raw_connection
+    return self.pool.connect()
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 449, in connect
+    return _ConnectionFairy._checkout(self)
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 1264, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 713, in checkout
+    rec = pool._do_get()
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/sqlalchemy/pool/impl.py", line 180, in _do_get
+    self._dec_overflow()
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/sqlalchemy/util/langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/sqlalchemy/pool/impl.py", line 177, in _do_get
+    return self._create_connection()
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 390, in _create_connection
+    return _ConnectionRecord(self)
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 675, in __init__
+    self.__connect()
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 902, in __connect
+    pool.logger.debug("Error on connect(): %s", e)
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/sqlalchemy/util/langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/sqlalchemy/pool/base.py", line 897, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/sqlalchemy/engine/create.py", line 646, in connect
+    return dialect.connect(*cargs, **cparams)
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/sqlalchemy/engine/default.py", line 625, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/sqlalchemy/dialects/mysql/aiomysql.py", line 270, in connect
+    await_only(creator_fn(*arg, **kw)),
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/sqlalchemy/util/_concurrency_py3k.py", line 132, in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/sqlalchemy/util/_concurrency_py3k.py", line 196, in greenlet_spawn
+    value = await result
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/aiomysql/connection.py", line 75, in _connect
+    await conn._connect()
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/aiomysql/connection.py", line 540, in _connect
+    await self._request_authentication()
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/aiomysql/connection.py", line 844, in _request_authentication
+    auth_packet = await self._read_packet()
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/aiomysql/connection.py", line 652, in _read_packet
+    packet.raise_for_error()
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/pymysql/protocol.py", line 219, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "/root/adhd-todolist-project/backend/venv/lib64/python3.9/site-packages/pymysql/err.py", line 150, in raise_mysql_exception
+    raise errorclass(errno, errval)
+sqlalchemy.exc.OperationalError: (pymysql.err.OperationalError) (1049, "Unknown database 'todos'")
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+
+ERROR:    Application startup failed. Exiting.
+📦 app.routes.todo 등록 확인됨
+INFO:     Stopping reloader process [6949]
