@@ -24,22 +24,25 @@ const handleLogin = async () => {
 };
 
   return (
-    <div className="container">
-      <h2>로그인</h2>
-      <input
-        type="text"
-        placeholder="아이디(이메일)"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="비밀번호"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button onClick={handleLogin}>로그인</button>
-      <button onClick={() => navigate('/signup')}>회원가입</button>
+    <div className="login-background">
+      <img src="/logo.png" alt="로고" className="login-logo" />
+      <div className="login-form">
+        <h2>로그인</h2>
+        <input
+          type="text"
+          placeholder="아이디(이메일)"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="비밀번호"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button onClick={handleLogin} className="login-button">로그인</button>
+        <button className="signup-button" onClick={() => navigate('/signup')}>회원가입</button>
+      </div>
     </div>
   );
 }

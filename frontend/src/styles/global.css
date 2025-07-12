@@ -1,82 +1,438 @@
-
 body {
   margin: 0;
   font-family: 'Arial', sans-serif;
   background-color: #f9f9f9;
 }
 
-.container, .page, .modal {
-  max-width: 400px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background-color: white;
-  border-radius: 1rem;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+/* HeaderNav style */
+.header-nav {
+  /* background-color: #e7f0fa;   */
+  padding-bottom: 1rem ;
 }
 
-input[type="text"], input[type="password"], select {
-  display: block;
-  width: 100%;
-  margin: 0.5rem 0;
-  padding: 0.75rem;
-  border: 1px solid #ccc;
-  border-radius: 0.5rem;
-  font-size: 1rem;
+.header-logo {
+  display: flex; 
+  width: 200px;
+  height: auto;
+  object-fit: contain;
 }
 
-button {
-  margin-top: 0.5rem;
-  width: 100%;
-  padding: 0.75rem;
-  font-size: 1rem;
-  background-color: #6c63ff;
-  color: white;
-  border: none;
-  border-radius: 0.5rem;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #554cd1;
-}
-
-.footer-nav {
+.header-second-line {
   display: flex;
-  justify-content: space-around;
-  padding-top: 2rem;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0 0 0;
+  border-radius: 0 0 1rem 1rem;
 }
 
+.logout-button {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;         /* 아이콘과 텍스트 간격 */
+  background: #f28b00;
+  border: none;
+  border-radius: 3rem;
+  font-size: 1rem;
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+  padding: 7px;
+}
+
+.logout-button:hover{
+  background-color: #d2691e;
+}
+
+.header-date {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+  margin-top: 2rem;
+}
+
+
+
+/* Login, Signup page */
+.login-background {
+  background-color: #e7f0fa;  /* 파스텔 하늘색 */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-logo {
+  width: 350px;
+  height: auto;
+  /* margin-bottom: -100; */
+}
+
+.login-form {
+  background-color: white;
+  padding: 2.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 360px;
+  margin: 2rem auto;
+  text-align: center;
+}
+
+.login-form h2 {
+  font-size: 1.8rem;
+  margin-bottom: 3rem;
+  color: #111;
+}
+
+.login-form input[type="text"],
+.login-form input[type="password"] {
+  border: 1px solid #ccc;
+  border-radius: 0.75rem;
+  padding: 0.9rem;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  width: 90%;
+}
+
+.login-form input[type="password"] {
+  margin-bottom: 5rem;
+}
+
+.login-form button {
+  background-color: #79b0f8;
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 0.7rem;
+  width: 100%;
+  border: none;
+  border-radius: 2rem;
+  cursor: pointer;
+  margin-bottom: 0.75rem;
+}
+
+.login-form button:hover {
+  background-color: #4c65a1;
+}
+
+.login-form .signup-button {
+  background-color: #698ecc;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+}
+
+.login-form .secondary-button {
+  background: none;
+  color: #3b4c69;
+  font-weight: bold;
+  text-decoration: underline;
+  cursor: pointer;
+  border: none;
+}
+
+.login-form .secondary-button:hover {
+  color: #d53c3c;
+  background: none;       /* 배경색 변화 없음 */
+  box-shadow: none;       /* 그림자 효과 없음 */
+  text-decoration: underline;
+}
+
+
+/* Filled page */
+.page {
+  padding: 1rem;
+  background-color: #f9fcff;
+  /* min-height: 100vh; */
+}
+
+.serch {
+  width: 70%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: none solid #ccc;
+  border-radius: 2rem;
+  margin: 2rem 0 1.5rem 0;
+  background-color: #ffffff;
+  color: #333;
+  box-shadow: inset 0 0 0 1px #ccc;
+  transition: box-shadow 0.2s ease;
+}
+
+/* Filled page에서 일정 추가된 페이지 TodoItem */
 .todo-item {
-  background: #f0f0f0;
-  padding: 0.75rem;
-  margin-bottom: 0.5rem;
-  border-radius: 0.5rem;
+  background: white;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-/* Todo완료 스타일 추가 */
-.todo-item.completed {
+.todo-item.completed {                  /* Todo완료 스타일 */
   opacity: 0.5;
   text-decoration: line-through;
-  color: #888; /* 흐릿한 회색 톤 */
+  background: #f0f0f0;
+  color: #888;
 }
 
+.todo-item span {
+  flex-grow: 1;
+  margin-left: 0.5rem;
+  word-break: break-word;
+}
 
-/* 상단 로그아웃 버튼 */
-.button-small {
-  all: unset;
-  font-size: 0.75rem;
-  padding: 0.3rem 0.4rem;
-  border-radius: 0.5rem;
-  background-color: #6c63ff;
-  color: white;
+.icon-button {
+  background: none;
   border: none;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  padding: 0.3rem;
+  color: #333;
+  transition: color 0.2s ease;
 }
 
-.button-small:hover {
-  background-color: #554cd1;
+.icon-button:hover {
+  color: #e63b2f; /* 강조 (특히 삭제할 때) */
+}
+
+
+/* createModal page */
+.create-modal-bg {
+  background-color: rgba(0, 0, 0, 0.3);
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.create-modal-card {
+  background: white;
+  border-radius: 2rem;
+  padding: 2rem 1.5rem;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  position: relative;
+}
+
+.modal-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.2rem;
+}
+
+.icon-button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #333;
+}
+
+.icon-button.no-bg {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.2rem;
+  color: #689cc4;
+}
+
+.icon-button.no-bg:hover {
+  color: #007bff;
+}
+
+.input-todo {
+  width: 90%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 1.5rem;
+  /* margin: 2rem 0 1.5rem 0; */
+  margin: 1.5rem 0;
+  background-color: #f0f4f8;
+  color: #333;
+  box-shadow: inset 0 0 0 1px #ccc;
+  transition: box-shadow 0.2s ease;
+}
+
+.input-todo::placeholder {
+  color: #aaa;
+  font-weight: 500;
+}
+
+.input-todo:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #8ecdfc;
+}
+
+.modal-title {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #444;
+}
+
+.time-select-group {
+  /* display: flex; */
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.time-select-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.time-select-group select {
+  border: none;
+  border-radius: 9999px;
+  padding: 0.5rem 1rem;
+  background-color: #dbefff;
+  color: #1a5fb4;
+  font-weight: bold;
+  font-size: 0.95rem;
+}
+
+select:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #a7d3f7;
+}
+
+.notice-text {
+  margin-top: 1rem;
+  font-size: 0.8em;
+  color: #820000;
+  text-align: center;
+}
+
+.modal-label {
+  margin-top: 1.5rem;
+  font-weight: bold;
+  font-size: 0.95rem;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+select[value] {
+  appearance: none;
+}
+
+.time-select-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+  justify-content: flex-start;
+}
+
+.pill-select {
+  border: none;
+  border-radius: 9999px;
+  padding: 0.4rem 1rem;
+  font-size: 0.95rem;
+  font-weight: bold;
+  appearance: none;
+}
+
+.pill-select.blue {
+  background-color: #dbefff;
+  color: #1a5fb4;
+  margin-bottom: 2rem;
+}
+
+.pill-select.red {
+  background-color: #ffd6d6;
+  color: #c62828;
+  font-weight: bold;
+  border: none;
+  border-radius: 9999px;
+  padding: 0.4rem 1rem;
+  font-size: 0.95rem;
+  appearance: none;
+  text-align: center;       /* 가운데 정렬 */
+  text-align-last: center;  /* 일부 브라우저에서 select 가운데 정렬 */
+}
+
+select.pill-select.red option {
+  color: #c62828;
+  font-weight: bold;
+}
+
+.interval-box {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.interval-desc {
+  margin-left: 0.25rem;
+  font-weight: bold;
+  font-size: 0.9rem;
+  color: #000000;
+}
+
+
+/* FoterNav style */
+.footer-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 7%;
+  background-color: #e7f0fa;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  /* border-top: 1px solid #ddd; */
+  z-index: 1000;
+  padding-bottom: env(safe-area-inset-bottom); /*iOS 대응*/
+  border-radius: 1.2rem 1.2rem 0 0;
+}
+
+.footer-btn {                   /* 공통 버튼 스타일 */
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: #555;
+  padding: 0.5rem;
+}
+
+.footer-btn.left-btn {          /* 왼쪽 버튼 스타일 */
+  color: #222;
+}
+
+.footer-btn.center-btn {        /* 중앙 + 버튼 */
+  background-color: #53b5ff;
+  color: white;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: -40px;
+  box-shadow: 0 10px 5px rgba(0, 0, 0, 0.15);
+}
+
+.footer-btn.center-btn:hover {
+  background-color: #0b91ff;
+  color: #ffffff;
+}
+
+.footer-btn.right-btn {         /* 오른쪽 마이페이지 */
+  font-size: 1.6rem;
+  color: #888;
 }
