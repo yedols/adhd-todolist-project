@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { LogOut } from 'lucide-react';          //아이콘 적용
 
 // 오늘 날짜를 YYYY-MM-DD (Mon) 형식으로 포맷
 function getFormattedDate() {
@@ -27,23 +28,19 @@ export default function HeaderWithLogout() {
   };
 
   return (
-    <div
-      className="header"
-      style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: '0.8rem 1rem',
-        borderBottom: '1px solid #ddd'
-      }}
-    >
-      {/* 왼쪽 날짜 표시 */}
-      <h3 style={{ margin: 0 }}>{getFormattedDate()}</h3>
+    <div className="header-nav">
+        <div className="header-second-line">
+          {/* 로고 이미지 */}
+          <img src="/logo.png" alt="로고" className="header-logo" />
 
-      {/* 오른쪽 로그아웃 버튼 */}
-      <button className="button-small" onClick={handleLogout}>
-        로그아웃
-      </button>
+          {/* 오른쪽 로그아웃 버튼 */}
+          <button onClick={handleLogout} className="logout-button">
+            <LogOut size={20}/>
+            <span>로그아웃</span>
+          </button>
+        </div>
+        {/* 왼쪽 날짜 표시 */}
+        <div className="header-date">{getFormattedDate()}</div>
     </div>
   );
 }

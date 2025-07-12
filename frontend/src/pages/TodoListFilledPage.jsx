@@ -90,9 +90,10 @@ export default function TodoListFilledPage() {
       <HeaderNav />   {/* 헤더에 날짜/로그아웃 기능*/}
       <input
         type="text"
-        placeholder="Search"
+        placeholder="할 일을 검색하세요."
         value={searchText}
         onChange={(e) => setSearchText(e.target.value)}
+        className="serch"
       />
       {todos
         .filter(todo => todo.text.toLowerCase().includes(searchText.toLowerCase()))
