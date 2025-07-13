@@ -16,7 +16,6 @@ export default function TodoListEmptyPage() {
   return (
     <div className="page">
       <HeaderNav />   {/* 헤더에 날짜/로그아웃 기능*/}
-      <input type="text" placeholder="Search" />
       <p>등록된 일정이 없습니다.</p>
       <FooterNav />
     </div>
