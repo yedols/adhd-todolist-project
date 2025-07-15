@@ -9,6 +9,8 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     email = Column(String, unique=True, index=True, nullable=False)
 
+    fcm_token = Column(Text, nullable=True) 
+
     todos = relationship("Todo", back_populates="owner", cascade="all, delete-orphan")
 
 class Todo(Base):

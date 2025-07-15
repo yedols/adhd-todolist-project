@@ -1,9 +1,14 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from app.db import model, schema
+from sqlalchemy import select, insert, update
+from app.db.model import User
 
 async def create_user(db: AsyncSession, user: schema.UserCreate):
-    db_user = model.User(email=user.email)
+    db_user = model.User(
+        email=user.email,
+        fcm_token=user.fcm_token  # ✅ 추가
+    )
     db.add(db_user)
     await db.commit()
     await db.refresh(db_user)
@@ -67,3 +72,12 @@ async def delete_todo_by_id(db: AsyncSession, todo_id: int):
     await db.delete(todo_obj)
     await db.commit()
     return True
+
+# backend/app/crud/crud.py
+async def update_fcm_token(db: AsyncSession, user_id: int, fcm_token: str):
+    result = await db.execute(
+        update(User)
+        .where(User.id == user_id)
+        .values(fcm_token=fcm_token)
+    )
+    await db.commit()
