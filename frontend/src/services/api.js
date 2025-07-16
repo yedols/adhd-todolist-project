@@ -3,14 +3,16 @@ import axios from "axios";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;   //.env파일에서 API 주소 불러오기
 
 
-export const sendTokenToBackend = async (token) => {
+export const sendTokenToBackend = async (idToken, fcmToken) => {
   return axios.post(
     `${API_BASE_URL}/api/auth/register`, // 👈 baseURL을 직접 포함
+     
 	// "/api/auth/register",	  
-    {},
+    { fcm_token: fcmToken },
     {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${idToken}`,
+        "Content-Type": "application/json"
       },
     }
   );

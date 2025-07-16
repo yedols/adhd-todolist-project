@@ -18,6 +18,7 @@ class TodoRead(TodoCreate):
 
 class UserCreate(BaseModel):
     email: str
+    fcm_token: Optional[str] = None
 
 class UserRead(UserCreate):
     id: int
