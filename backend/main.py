@@ -11,7 +11,7 @@ print("📦 app.routes.todo 등록 확인됨")  # 모듈 import 시 확인
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # 프론트 도메인 -> 테스트용 이기 때문에 나중에 서비스 배포할 때는 *로 사용 X
+    allow_origins=["https://real.dotodo.click"],  # 프론트 도메인 -> 테스트용 이기 때문에 나중에 서비스 배포할 때는 *로 사용 X
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
