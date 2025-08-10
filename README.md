@@ -46,3 +46,4 @@ ADHD 성인은 일반적인 일정관리 앱을 사용하기 어려운 경우가
 
 
 ## AWS 인프라 아키텍처
+![Cloud Architecture](./DoTodo_Architecture.png)
